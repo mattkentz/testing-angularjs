@@ -10,7 +10,19 @@
 </head>
 <body ng-controller="TestingAngularCtrl">
 
-  <h1>{{title}}</h1>
+    <h1>{{title}}</h1>
+    
+    <form name="cityForm" ng-submit="addDestination(cityForm.$valid)">
+        City name: <input name="cityName" type=text ng-model="newCity.name" /> <br />
+        Duration: <input name="cityDuration" type="number" ng-model="newCity.duration" ng-min="1" /> <br />
+        <div ng-show="cityForm.cityDuration.$error.min">ERROR</div>
+        <input type="submit" value="Add" />
+    </form>
+    
+    <div ng-repeat="city in cities">
+        <div data-destination-city></div>
+        {{city.name}} {{city.duration}} <input type="button" value="Remove" ng-click="removeCityByIndex($index)" />
+    </div>
 
 </body>
 </html>
