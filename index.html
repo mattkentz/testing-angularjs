@@ -13,21 +13,31 @@
 
     <h1>{{title}}</h1>
 
-    <form name="cityForm" ng-submit="addDestination(cityForm.$valid)">
-    City name: <input name="cityName" type=text ng-model="newCity.name" /> <br />
-    Duration: <input name="cityDuration" type="number" ng-model="newCity.duration" ng-min="1" /> <br />
-    <div ng-show="cityForm.cityDuration.$error.min">ERROR</div>
-    <input type="submit" value="Add" />
+    <form name="desintationForm" ng-submit="addDestination(desintationForm.$valid)">
+        City: <input name="city" type=text ng-model="newDestination.city" /> <br />
+        Country: <input name="country" type="text" ng-model="newDestination.country" ng-minLength="3" /> <br />
+        <div ng-show="cityForm.country.$error.minLength">ERROR</div>
+        <input type="submit" value="Add" />
     </form>
 
     <br />
     <h2>Your trip</h2>
-    <div>
-    Search <input type="text" ng-model="search">
-    </div>
-    <div ng-repeat="city in cities | filter : search">
-    <div data-destination-city></div>
-    {{city.name}} {{city.duration}} <input type="button" value="Remove" ng-click="removeCityByIndex($index)" />
+    <!-- FILTERS -->
+    <section>
+        Search <input type="text" ng-model="search"> <br />
+        Sort by:
+        <select ng-model="sort">
+          <option value="city">City</option>
+          <option value="country">Country</option>
+        </select>  
+    </section>
+    
+    <!-- DATA -- -->
+    <div ng-repeat="destination in destinations | filter : search | orderBy : sort">
+        <div data-destination-city></div>
+        {{destination.city}}, {{destination.country}} <span ng-if="destination.weather"> - {{destination.weather.main}}, {{destination.weather.temp}}C</span>
+        <input type="button" value="Remove" ng-click="removeDestinationByIndex($index)" />
+        <input type="button" value="Update Weather" ng-click="getWeatherForDestination(destination)" />
     </div>
 
 </body>

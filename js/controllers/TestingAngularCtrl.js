@@ -1,40 +1,56 @@
-testingAngularApp.controller('TestingAngularCtrl', ['$rootScope', '$scope', function ($rootScope, $scope) {
+testingAngularApp.controller('TestingAngularCtrl', ['$rootScope', '$scope', '$http', function ($rootScope, $scope, $http) {
     $scope.title = "Testing AngularJS Applications";
-    
+    $scope.sort = "city";
     //Populate with some data
-    $scope.cities = [
+    $scope.destinations = [
         {
-            name: "London",
-            duration: "2"
+            city: "London",
+            country: "England"
         },
         {
-            name: "Munich",
-            duration: "3"
+            city: "Munich",
+            country: "Germany"
         },
         {
-            name: "Zurich",
-            duration: "2"
+            city: "Zurich",
+            country: "Switzerland"
         },
         {
-            name: "Rome",
-            duration: "5"
+            city: "Rome",
+            country: "Italy"
         },
+        {
+            city : "Paris",
+            country: "France"
+        }
     ];
-    $scope.newCity = {};
+    $scope.newDestination = {};
     
     $scope.addDestination = function (isValid) {
         
         if(isValid) {
-            $scope.cities.push(
+            $scope.destinations.push(
             { 
-                name: $scope.newCity.name, 
-                duration: $scope.newCity.duration
+                city: $scope.newDestination.city, 
+                country: $scope.newDestination.country
             });
         }
     }
     
-    $scope.removeCityByIndex = function (index) {
-        $scope.cities.splice(index,1);
+    $scope.removeDestinationByIndex = function (index) {
+        $scope.destinations.splice(index,1);
+    };
+    
+    $scope.getWeatherForDestination = function(destinationObj) {
+        $http.get('http://api.openweathermap.org/data/2.5/weather?q='+ destinationObj.city).success(function(response) {
+            destinationObj.weather = {};
+            destinationObj.weather.main = response.weather[0].main; //return only first weather present
+            destinationObj.weather.temp = $scope.convertKelvinToCelsius(response.main.temp);
+        });
+    };
+    
+    $scope.convertKelvinToCelsius = function(temperature) {
+        return Math.round(temperature - 273);
     }
   
 }]);
