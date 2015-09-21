@@ -69,10 +69,6 @@ describe('TestingAngularCtrl', function(){
         expect(scope.destinations[1].city).toBe("Venice"); 
     });
     
-    it('should set the default value of order model', function() {
-      expect(scope.sort).toBe('city');
-    });
-    
     it('should calculate the correct temperature in degrees celsius', function() {
         var kelvin = 300;
         var celsius = scope.convertKelvinToCelsius(kelvin);

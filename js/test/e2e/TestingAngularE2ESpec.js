@@ -53,6 +53,16 @@ describe('TestingAngularApp', function() {
         
         });
         
+        it('should show weather section for destination', function() {
+            var weatherSpans = element.all(by.binding('destination.weather.temp'));
+            expect(weatherSpans.count()).toBe(0);
+            //Find first instance of get weather button and click it
+            element.all(by.name('updateWeatherButton')).last().click();
+            
+            expect(weatherSpans.count()).toBe(1);
+        
+        });
+        
         it('should remove destination from destination list', function() {
             expect(destinationList.count()).toBe(5);
             
@@ -62,11 +72,6 @@ describe('TestingAngularApp', function() {
             expect(destinationList.count()).toBe(4);
         
         });
-        
-        it('should add weather details to destination', function() {
-        
-            
-            
-        });
+    
     });
 });

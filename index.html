@@ -38,6 +38,7 @@
         {{destination.city}}, {{destination.country}} <span ng-if="destination.weather"> - {{destination.weather.main}}, {{destination.weather.temp}}C</span>
         <input name="removeDestinationButton" type="button" value="Remove" ng-click="removeDestinationByIndex($index)" />
         <input name="updateWeatherButton" type="button" value="Update Weather" ng-click="getWeatherForDestination(destination)" />
+        <input name="viewDetailsButton" type="button" value="More Details" ng-click="getWeatherForDestination(destination)" />
     </div>
 
 </body>
