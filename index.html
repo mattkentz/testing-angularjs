@@ -17,7 +17,7 @@
         City: <input name="city" type=text ng-model="newDestination.city" /> <br />
         Country: <input name="country" type="text" ng-model="newDestination.country" ng-minLength="3" /> <br />
         <div ng-show="cityForm.country.$error.minLength">ERROR</div>
-        <input type="submit" value="Add" />
+        <input id="AddDestinationButton" type="submit" value="Add" />
     </form>
 
     <br />
@@ -36,8 +36,8 @@
     <div ng-repeat="destination in destinations | filter : search | orderBy : sort">
         <div data-destination-city></div>
         {{destination.city}}, {{destination.country}} <span ng-if="destination.weather"> - {{destination.weather.main}}, {{destination.weather.temp}}C</span>
-        <input type="button" value="Remove" ng-click="removeDestinationByIndex($index)" />
-        <input type="button" value="Update Weather" ng-click="getWeatherForDestination(destination)" />
+        <input name="removeDestinationButton" type="button" value="Remove" ng-click="removeDestinationByIndex($index)" />
+        <input name="updateWeatherButton" type="button" value="Update Weather" ng-click="getWeatherForDestination(destination)" />
     </div>
 
 </body>
