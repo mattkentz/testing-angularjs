@@ -1,2 +1,0 @@
-# TestingAngularJS
-Testing AngularJS Applications
