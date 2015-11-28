@@ -1,11 +1,25 @@
 <!doctype html>
 <html lang="en" ng-app="testingAngularApp">
-    <head>
-        <title>Testing AngularJS</title>
-        <script src="bower_components/angular/angular.js"></script>
-        <script src="js/app.js"></script>
-    </head>
-    <body ng-controller="testingAngularCtrl">
-        {{title}}
-    </body>
+  <head>
+    <title>Testing Angular</title>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="js/app.js"></script>
+  </head>
+  <body ng-controller="testingAngularCtrl">
+    <header><h1>{{title}}</h1></header>
+
+    <form name="destinationForm" ng-submit="addDestination()">
+      City: <input name="city" type=text ng-model="newDestination.city" />
+       Country: <input name="country" type="text" ng-model="newDestination.country" /> <br />
+      <input type="submit" value="Add" />
+    </form>
+
+    <section>
+      <h2>Your Trip</h2>
+      <div ng-repeat="destination in destinations">
+          <span>{{destination.city}}, {{destination.country}} </span>
+          <button ng-click="removeDestination($index)">Remove</button>
+      </div>
+    </section>    
+  </body>
 </html>
