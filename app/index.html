@@ -16,9 +16,13 @@
 
     <section>
       <h2>Your Trip</h2>
+      <h4 ng-show="message">{{message}}</h4>
       <div ng-repeat="destination in destinations">
           <span>{{destination.city}}, {{destination.country}} </span>
-          <button ng-click="removeDestination($index)">Remove</button>
+        <span ng-if="destination.weather"> - {{destination.weather.main}}, {{destination.weather.temp}}C</span>
+        <button ng-click="removeDestination($index)">Remove</button>
+        <button ng-click="getWeather(destination)">Update Weather</button>
+        
       </div>
     </section>    
   </body>
