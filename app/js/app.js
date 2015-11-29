@@ -1,6 +1,6 @@
 var testingAngluarApp = angular.module('testingAngularApp', []);
 
-testingAngluarApp.controller('testingAngularCtrl', ['$http', '$rootScope', '$scope', '$timeout', function ($http, $rootScope, $scope, $timeout) {
+testingAngluarApp.controller('testingAngularCtrl', ['conversionHelper', '$http', '$rootScope', '$scope', '$timeout', function (conversionHelper, $http, $rootScope, $scope, $timeout) {
     
   $scope.title = "Testing AngularJS Applications";
   $scope.apiKey = "2de143494c0b295cca9337e1e96b00e0";
@@ -29,17 +29,13 @@ testingAngluarApp.controller('testingAngularCtrl', ['$http', '$rootScope', '$sco
         if (response.data.weather) {
           destination.weather = {};
           destination.weather.main = response.data.weather[0].main; //return only first weather present
-          destination.weather.temp = $scope.convertKelvinToCelsius(response.data.main.temp); 
+          destination.weather.temp = conversionHelper.convertKelvinToCelsius(response.data.main.temp); 
         } else if (response.data.message) {
           $scope.message = response.data.message;
         }
       }, function errorCallback(response) {
         $scope.message = "Could not retrieve weather for " + destination.city;
       });
-  };
-    
-  $scope.convertKelvinToCelsius = function(temperature) {
-    return Math.round(temperature - 273);
   };
   
   $scope.messageWatcher = $scope.$watch('message', function () {
@@ -64,5 +60,17 @@ testingAngluarApp.filter('warmestDestinations', function () {
     
     return warmDestinations;
   };
+  
+});
+
+testingAngluarApp.service('conversionHelper', function ($http) {
+  var conversionHelper = 
+    {
+      convertKelvinToCelsius: function (temperature) {
+        return Math.round(temperature - 273);
+      } 
+    };
+  
+  return conversionHelper;
   
 });

@@ -73,14 +73,7 @@ describe('Testing AngularJS Test Suite', function(){
       expect(scope.destinations[0].city).toBe("New York");
       expect(scope.destinations[0].country).toBe("USA"); 
       expect(scope.destinations[1]).toBeUndefined();
-    });
-
-    it('should calculate the correct temperature in degrees celsius', function() {
-      var kelvin = 300;
-      var celsius = scope.convertKelvinToCelsius(kelvin);
-
-      expect(celsius).toBe(27);
-    });    
+    });   
 
     it('should update the weather for the specified destination', function() {
       httpBackend.expectGET("http://api.openweathermap.org/data/2.5/weather?q=London&appid=" + scope.apiKey).respond(
@@ -114,6 +107,12 @@ describe('Testing AngularJS Test Suite', function(){
   });
   
   describe('Testing AngularJS Filter', function(){
+    var warmestDestinations;
+    
+    beforeEach(inject(function ($filter) {
+      warmestDestinations = $filter("warmestDestinations");
+    }));
+    
     it('should return only the warm countries', inject(function($filter) {
       var filter = $filter;
       var destinations = 
@@ -145,10 +144,27 @@ describe('Testing AngularJS Test Suite', function(){
         ];
       expect(destinations.length).toBe(3);
       
-      var warmest = filter("warmestDestinations")(destinations, 15);
+      var warmest = warmestDestinations(destinations, 15);
       expect(warmest.length).toBe(2);
       expect(warmest[0].city).toBe("Beijing");
       expect(warmest[1].city).toBe("Melbourne");
     }));
+  });
+  
+  describe('Testing AngularJS Service', function(){
+    
+    var conversionHelper;
+    
+    beforeEach(inject(function (_conversionHelper_) {
+      conversionHelper = _conversionHelper_;
+    }));
+    
+    it('should calculate the correct temperature in degrees celsius', function() {
+      var kelvin = 300;
+      var celsius = conversionHelper.convertKelvinToCelsius(kelvin);
+
+      expect(celsius).toBe(27);
+    }); 
+    
   });
 });
