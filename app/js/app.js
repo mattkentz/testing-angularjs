@@ -1,6 +1,6 @@
 var testingAngluarApp = angular.module('testingAngularApp', []);
 
-testingAngluarApp.controller('testingAngularCtrl', ['$http', '$rootScope', '$scope', function ($http, $rootScope, $scope) {
+testingAngluarApp.controller('testingAngularCtrl', ['$http', '$rootScope', '$scope', '$timeout', function ($http, $rootScope, $scope, $timeout) {
     
   $scope.title = "Testing AngularJS Applications";
   $scope.apiKey = "2de143494c0b295cca9337e1e96b00e0";
@@ -41,5 +41,13 @@ testingAngluarApp.controller('testingAngularCtrl', ['$http', '$rootScope', '$sco
   $scope.convertKelvinToCelsius = function(temperature) {
     return Math.round(temperature - 273);
   };
+  
+  $scope.messageWatcher = $scope.$watch('message', function () {
+    if ($scope.message) {
+      $timeout(function () {
+        $scope.message = null;
+      }, 3000);
+    }
+  });
     
 }]);
