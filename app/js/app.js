@@ -23,25 +23,10 @@ testingAngluarApp.controller('testingAngularCtrl', ['conversionHelper', '$http',
     $scope.destinations.splice(index, 1);
   }
   
-  $scope.getWeather = function(destination) {
-    $http.get('http://api.openweathermap.org/data/2.5/weather?q='+ destination.city + "&appid=" + $scope.apiKey)
-      .then(function successCallback(response) {
-        if (response.data.weather) {
-          destination.weather = {};
-          destination.weather.main = response.data.weather[0].main; //return only first weather present
-          destination.weather.temp = conversionHelper.convertKelvinToCelsius(response.data.main.temp); 
-        } else if (response.data.message) {
-          $scope.message = response.data.message;
-        }
-      }, function errorCallback(response) {
-        $scope.message = "Could not retrieve weather for " + destination.city;
-      });
-  };
-  
-  $scope.messageWatcher = $scope.$watch('message', function () {
-    if ($scope.message) {
+  $scope.messageWatcher = $rootScope.$watch('message', function () {
+    if ($rootScope.message) {
       $timeout(function () {
-        $scope.message = null;
+        $rootScope.message = null;
       }, 3000);
     }
   });
@@ -63,7 +48,7 @@ testingAngluarApp.filter('warmestDestinations', function () {
   
 });
 
-testingAngluarApp.service('conversionHelper', function ($http) {
+testingAngluarApp.service('conversionHelper', function () {
   var conversionHelper = 
     {
       convertKelvinToCelsius: function (temperature) {
@@ -73,4 +58,41 @@ testingAngluarApp.service('conversionHelper', function ($http) {
   
   return conversionHelper;
   
+});
+
+testingAngluarApp.directive('destinationDirective', function ($http) {
+  return {
+    scope: {
+      destination: '=',
+      apiKey: '=',
+      onRemove: '&'
+    },
+    controller: function (conversionHelper, $http, $rootScope, $scope) {
+      
+      $scope.getWeather = function(destination) {
+        $http.get('http://api.openweathermap.org/data/2.5/weather?q='+ destination.city + "&appid=" + $scope.apiKey)
+          .then(function successCallback(response) {
+            if (response.data.weather) {
+              destination.weather = {};
+              destination.weather.main = response.data.weather[0].main; //return only first weather present
+              destination.weather.temp = conversionHelper.convertKelvinToCelsius(response.data.main.temp); 
+            } else if (response.data.message) {
+              $rootScope.message = response.data.message;
+            }
+            }, function errorCallback(response) {
+              $rootScope.message = "Could not retrieve weather for " + destination.city;
+            }
+          );
+      };  
+      
+    },
+    link: function (scope, elem, attr, destinationController) {
+      console.log(scope.destination);
+      console.log(scope.apiKey);  
+    },
+    template: '<span>{{destination.city}}, {{destination.country}} </span>' +
+        '<span ng-if="destination.weather"> - {{destination.weather.main}}, {{destination.weather.temp}}C</span>' +
+        '<button ng-click="onRemove()">Remove</button>' +
+        '<button ng-click="getWeather(destination)">Update Weather</button>'
+  };
 });
