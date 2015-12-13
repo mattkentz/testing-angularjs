@@ -1,6 +1,6 @@
 var testingAngluarApp = angular.module('testingAngularApp', []);
 
-testingAngluarApp.controller('testingAngularCtrl', ['conversionHelper', '$http', '$rootScope', '$scope', '$timeout', function (conversionHelper, $http, $rootScope, $scope, $timeout) {
+testingAngluarApp.controller('testingAngularCtrl', ['$rootScope', '$scope', '$timeout', function ($rootScope, $scope, $timeout) {
     
   $scope.title = "Testing AngularJS Applications";
   $scope.apiKey = "2de143494c0b295cca9337e1e96b00e0";
@@ -68,7 +68,6 @@ testingAngluarApp.directive('destinationDirective', function ($http) {
       onRemove: '&'
     },
     controller: function (conversionHelper, $http, $rootScope, $scope) {
-      
       $scope.getWeather = function(destination) {
         $http.get('http://api.openweathermap.org/data/2.5/weather?q='+ destination.city + "&appid=" + $scope.apiKey)
           .then(function successCallback(response) {
@@ -85,10 +84,6 @@ testingAngluarApp.directive('destinationDirective', function ($http) {
           );
       };  
       
-    },
-    link: function (scope, elem, attr, destinationController) {
-      console.log(scope.destination);
-      console.log(scope.apiKey);  
     },
     template: '<span>{{destination.city}}, {{destination.country}} </span>' +
         '<span ng-if="destination.weather"> - {{destination.weather.main}}, {{destination.weather.temp}}C</span>' +
