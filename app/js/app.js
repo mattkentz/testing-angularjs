@@ -77,9 +77,11 @@ testingAngluarApp.directive('destinationDirective', function () {
               destination.weather.temp = conversionHelper.convertKelvinToCelsius(response.data.main.temp); 
             } else if (response.data.message) {
               $rootScope.message = response.data.message;
+            } else {
+              $rootScope.message = "Could not retrieve weather for " + destination.city;
             }
             }, function errorCallback(response) {
-              $rootScope.message = "Could not retrieve weather for " + destination.city;
+              $rootScope.message = "A server error has occurred";
             }
           );
       };  

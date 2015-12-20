@@ -185,6 +185,42 @@ describe('Testing AngularJS Test Suite', function(){
       expect(scope.destination.weather.temp).toBe(15);
     });
     
+    it('should display error message when a message is returned', function() {
+      httpBackend.expectGET("http://api.openweathermap.org/data/2.5/weather?q=London&appid=" + scope.apiKey).respond(
+        {
+          message: 'Weather unavailable'
+        }
+      );
+
+      isolateScope.getWeather(scope.destination);
+
+      expect(rootScope.message).toBeUndefined();
+      httpBackend.flush();
+      expect(rootScope.message).toBe('Weather unavailable');
+    });
+    
+    it('should display error message when no data is returned', function() {
+      httpBackend.expectGET("http://api.openweathermap.org/data/2.5/weather?q=London&appid=" + scope.apiKey).respond(
+        {}
+      );
+
+      isolateScope.getWeather(scope.destination);
+
+      expect(rootScope.message).toBeUndefined();
+      httpBackend.flush();
+      expect(rootScope.message).toBe('Could not retrieve weather for London');
+    });
+    
+    it('should display error message when there is a problem with the request', function() {
+      httpBackend.expectGET("http://api.openweathermap.org/data/2.5/weather?q=London&appid=" + scope.apiKey).respond(500);
+
+      isolateScope.getWeather(scope.destination);
+
+      expect(rootScope.message).toBeUndefined();
+      httpBackend.flush();
+      expect(rootScope.message).toBe('A server error has occurred');
+    });
+    
     it('should call the parent controller remove function', function () {
       scope.removeTest = 1;
       scope.remove = function () {
