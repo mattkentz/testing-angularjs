@@ -60,7 +60,7 @@ testingAngluarApp.service('conversionHelper', function () {
   
 });
 
-testingAngluarApp.directive('destinationDirective', function ($http) {
+testingAngluarApp.directive('destinationDirective', function () {
   return {
     scope: {
       destination: '=',

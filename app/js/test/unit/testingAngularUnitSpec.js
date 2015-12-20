@@ -208,6 +208,6 @@ describe('Testing AngularJS Test Suite', function(){
       
       expect(templateAsHtml).toContain('Tokyo, Japan');
     });
-    
+
   });
 });
