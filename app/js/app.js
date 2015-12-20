@@ -89,7 +89,7 @@ testingAngluarApp.directive('destinationDirective', function () {
     },
     template: '<span>{{destination.city}}, {{destination.country}} </span>' +
         '<span ng-if="destination.weather"> - {{destination.weather.main}}, {{destination.weather.temp}}C</span>' +
-        '<button ng-click="onRemove()">Remove</button>' +
-        '<button ng-click="getWeather(destination)">Update Weather</button>'
+        '<button name="removeDestinationButton" ng-click="onRemove()">Remove</button>' +
+        '<button name="updateWeatherButton" ng-click="getWeather(destination)">Update Weather</button>'
   };
 });
