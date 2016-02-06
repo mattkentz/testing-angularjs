@@ -1,0 +1,22 @@
+{
+  "name": "app",
+  "authors": [
+    "Matthias Kentzia <matthias.kentzia@tipico.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8",
+    "angular-mocks": "~1.4.8"
+  }
+}
