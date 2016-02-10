@@ -128,6 +128,18 @@ describe('Testing AngularJS Test Suite', function() {
   describe('Testing AngularJS Directive', function () {
     var scope, template, httpBackend, isolateScope, rootScope;
     
+    beforeEach(function () {
+      module(function ($provide) {
+        var MockConversionService = {
+          convertKelvinToCelsius: function (temp) {
+            return Math.round(temp - 273);
+          }
+        };
+        
+        $provide.value('conversionService', MockConversionService);
+      });
+    });
+    
     beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
       scope = $rootScope.$new();
       rootScope = $rootScope;

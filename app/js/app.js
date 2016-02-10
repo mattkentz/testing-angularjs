@@ -5,7 +5,7 @@ testingAngularApp.controller('testingAngularCtrl', function ($rootScope, $scope,
   
   $scope.destinations = [];
   
-  $scope.apiKey = "ba4c078e9cb910b1b65731783f6cac8b";
+  $scope.apiKey = "abdbb234352a13b6dd3f35c6b0f062a3";
   
   $scope.newDestination = {
     city: undefined,
@@ -62,7 +62,7 @@ testingAngularApp.directive('destinationDirective', function () {
         '</span>' +
         '<button ng-click="onRemove()">Remove</button>' +
         '<button ng-click="getWeather(destination)">Update Weather</button>',
-    controller: function ($http, $rootScope, $scope) {
+    controller: function ($http, $rootScope, $scope, conversionService) {
       $scope.getWeather = function (destination) {
         $http.get("http://api.openweathermap.org/data/2.5/weather?q=" 
                   + destination.city + "&appid=" + $scope.apiKey).then(
@@ -70,7 +70,8 @@ testingAngularApp.directive('destinationDirective', function () {
           if (response.data.weather) {
             destination.weather = {};
             destination.weather.main = response.data.weather[0].main;
-            destination.weather.temp = $scope.convertKelvinToCelsius(response.data.main.temp);
+            destination.weather.temp =
+              conversionService.convertKelvinToCelsius(response.data.main.temp);
           } else {
             $rootScope.message = "City not found";
           }
@@ -81,9 +82,14 @@ testingAngularApp.directive('destinationDirective', function () {
         );
       };
 
-      $scope.convertKelvinToCelsius = function (temp) {
-        return Math.round(temp - 273);
-      };
     }
   }
+});
+
+testingAngularApp.service('conversionService', function () {
+  this.convertKelvinToCelsius = function (temp) {
+    return Math.round(temp - 273);
+  };
+  
+  return this;
 });
