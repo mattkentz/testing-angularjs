@@ -78,6 +78,7 @@ testingAngularApp.directive('destinationDirective', function () {
         },
           function errorCallback (error) {
             $rootScope.message = "Server error";
+            $rootScope.$broadcast('messageUpdate', { type: 'error', message: 'Server Error'});
           }
         );
       };
