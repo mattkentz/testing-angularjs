@@ -130,7 +130,7 @@ describe('Testing AngularJS Test Suite', function(){
 
   describe('Testing AngularJS Directive', function(){
 
-    var scope, template, httpBackend, isolateScope;
+    var scope, template, httpBackend, isolateScope, rootScope;
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
       rootScope = $rootScope;
@@ -177,6 +177,38 @@ describe('Testing AngularJS Test Suite', function(){
 
       expect(scope.destination.weather.main).toBe("Rain");
       expect(scope.destination.weather.temp).toBe(15);
+    });
+
+    it('should add a message if no city is found', function() {
+      scope.destination =
+      {
+        city : "Melbourne",
+        country: "Australia"
+      };
+
+      httpBackend.expectGET("http://api.openweathermap.org/data/2.5/weather?q="+ scope.destination.city +"&appid=" + scope.apiKey).respond({});
+
+      isolateScope.getWeather(scope.destination);
+
+      httpBackend.flush();
+
+      expect(rootScope.message).toBe("City not found");
+    });
+
+    it('should add a message if there is a server error', function() {
+      scope.destination =
+      {
+        city : "Melbourne",
+        country: "Australia"
+      };
+
+      httpBackend.expectGET("http://api.openweathermap.org/data/2.5/weather?q="+ scope.destination.city +"&appid=" + scope.apiKey).respond(500);
+
+      isolateScope.getWeather(scope.destination);
+
+      httpBackend.flush();
+
+      expect(rootScope.message).toBe("Server Error");
     });
 
     it('should call the parent controller remove function', function () {
