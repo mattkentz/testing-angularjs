@@ -3,7 +3,7 @@ var testingAngluarApp = angular.module('testingAngularApp', []);
 testingAngluarApp.controller('testingAngularCtrl', function ($rootScope, $scope, $http, $timeout) {
 
   $scope.title = "Testing AngularJS Applications";
-  $scope.apiKey = "2de143494c0b295cca9337e1e96b00e0";
+  $scope.apiKey = "3e913428f0759a6c8db3a0114bf38611";
 
   $scope.destinations = [];
   $scope.newDestination = {
@@ -50,4 +50,19 @@ testingAngluarApp.controller('testingAngularCtrl', function ($rootScope, $scope,
       }, 3000);
     }
   });
+});
+
+testingAngluarApp.filter('warmestDestinations', function () {
+
+  return function (destinations, minimumTemp) {
+    var warmDestinations = [];
+    angular.forEach(destinations, function (destination) {
+      if (destination.weather && destination.weather.temp && destination.weather.temp >= minimumTemp) {
+        warmDestinations.push(destination);
+      }
+    });
+
+    return warmDestinations;
+  };
+
 });
