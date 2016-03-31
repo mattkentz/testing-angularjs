@@ -1,3 +1,4 @@
+
 describe('Testing AngularJS Test Suite', function() {
 
   beforeEach(module('testingAngularApp'));
@@ -126,7 +127,7 @@ describe('Testing AngularJS Test Suite', function() {
   });
 
   describe('Testing AngularJS Directive', function () {
-    var scope, template, httpBackend, isolateScope, rootScope;
+    var scope, template, httpBackend, isolateScope, rootScope, conversionService;
 
     beforeEach(function () {
       module(function ($provide) {
@@ -140,10 +141,11 @@ describe('Testing AngularJS Test Suite', function() {
       });
     });
 
-    beforeEach(inject(function ($compile, $rootScope, $httpBackend) {
+    beforeEach(inject(function ($compile, $rootScope, $httpBackend, _conversionService_) {
       scope = $rootScope.$new();
       rootScope = $rootScope;
       httpBackend = $httpBackend;
+      conversionService = _conversionService_;
 
       scope.destination = {
         city: "Tokyo",
@@ -163,6 +165,9 @@ describe('Testing AngularJS Test Suite', function() {
     }));
 
     it('should update the weather for a specific destination', function () {
+      spyOn(conversionService, 'convertKelvinToCelsius').and.callFake(function (temp) {
+        return temp - 273;
+      });
       scope.destination = {
         city: "Melbourne",
         country: "Australia"
@@ -180,6 +185,7 @@ describe('Testing AngularJS Test Suite', function() {
 
       expect(scope.destination.weather.main).toBe("Rain");
       expect(scope.destination.weather.temp).toBe(15);
+      expect(conversionService.convertKelvinToCelsius).toHaveBeenCalledWith(288);
     });
 
     it('should add a message if no city is found', function () {
@@ -199,6 +205,7 @@ describe('Testing AngularJS Test Suite', function() {
     });
 
     it('should add a message when there is a server error', function () {
+      spyOn(rootScope, '$broadcast');
       scope.destination = {
         city: "Melbourne",
         country: "Australia"
@@ -211,6 +218,11 @@ describe('Testing AngularJS Test Suite', function() {
       httpBackend.flush();
 
       expect(rootScope.message).toBe("Server error");
+      expect(rootScope.$broadcast).toHaveBeenCalled();
+      expect(rootScope.$broadcast).toHaveBeenCalledWith('messageUpdate',
+        { type: 'error', message: 'Server Error' });
+      expect(rootScope.$broadcast.calls.any()).toBeTruthy();
+      expect(rootScope.$broadcast.calls.count()).toBe(1);
     });
 
   });
