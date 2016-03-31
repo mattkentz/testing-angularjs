@@ -79,10 +79,6 @@ testingAngluarApp.directive('destinationDirective', function ($http) {
         return Math.round(temperature - 273);
       };
 
-    },
-    link: function (scope, elem, attr, destinationController) {
-      console.log(scope.destination);
-      console.log(scope.apiKey);
     }
   };
 });

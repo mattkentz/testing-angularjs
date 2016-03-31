@@ -148,5 +148,5 @@ describe('Testing AngularJS Test Suite', function(){
       expect(warmestDestinations[1].city).toBe("Lima");
     }));
   });
-
+  
 });
