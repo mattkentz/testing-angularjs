@@ -17,4 +17,8 @@ testingAngluarApp.controller('testingAngularCtrl', function ($rootScope, $scope)
       country: $scope.newDestination.country
     });
   };
+
+  $scope.removeDestination = function (index) {
+    $scope.destinations.splice(index, 1);
+  };
 });
